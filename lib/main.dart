@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Catatan Keuangan",
-      theme: ThemeData(primaryColor: Colors.orange),
+      theme: ThemeData(primarySwatch: Colors.orange),
       home: new Home(),
     );
   }
