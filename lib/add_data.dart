@@ -13,80 +13,70 @@ class _AddDataState extends State<AddData> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Income / Expenses'),
-      )
-      body: Column(
-        children: [
+        appBar: AppBar(
+          title: Text('Add Income / Expenses'),
+        ),
+        body: Column(children: [
           Padding(
-            padding: const EdgeInsets.only(top: 14, left: 14, right: 14),
-            child: TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Enter Amount',
-              )
-              keyboardType: TextInputType.number,
-            )
-          ),
-
+              padding: const EdgeInsets.only(top: 14, left: 14, right: 14),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Enter Amount',
+                ),
+                keyboardType: TextInputType.number,
+              )),
           Padding(
-            padding: const EdgeInsets.only(top: 14, left: 14, right: 14),
-            child: TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Enter Title',
-              )
-              keyboardType: TextInputType.text,
-            )
-          ),
-
+              padding: const EdgeInsets.only(top: 14, left: 14, right: 14),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Enter Title',
+                ),
+                keyboardType: TextInputType.text,
+              )),
           SizedBox(
-            heigth: 14,
-          )
-
+            width: 14,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Type :'),
-              SizedBox(width: 14,),
+              SizedBox(
+                width: 14,
+              ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   type = 'cr';
-                  setState() {
-
-                  }
+                  setState(() {});
                 },
                 child: Chip(
-                  backgroundColor: type == 'cr' ? Colors.orange : Colors.grey[200],
-                  label: Text('Income')),
-              )
-              SizedBox(width: 14,),
+                    backgroundColor:
+                        type == 'cr' ? Colors.orange : Colors.grey[200],
+                    label: Text('Income')),
+              ),
+              SizedBox(
+                width: 14,
+              ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   type = 'dr';
-                  setState() {
-
-                  }
+                  setState(() {});
                 },
                 child: Chip(
-                  backgroundColor: type == 'dr' ? Colors.orange : Colors.grey[200],
-                  label: Text('Expense')),
+                    backgroundColor:
+                        type == 'dr' ? Colors.orange : Colors.grey[200],
+                    label: Text('Expense')),
               )
-              
             ],
-          )
-
-          SizedBox(width: 14,),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {},
-                child: Container(width: 100, child: Text('Save')),
-              )
-            ]
-          )
-        ]
-      )
-    )
+          ),
+          SizedBox(
+            width: 14,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            ElevatedButton(
+              onPressed: () {},
+              child: Container(width: 100, child: Text('Save')),
+            )
+          ])
+        ]));
   }
 }

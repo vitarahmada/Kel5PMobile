@@ -1,8 +1,10 @@
-import 'dart:html';
+//import 'dart:html';
 
 import 'package:catatankeuangan/entry_card.dart';
 import 'package:catatankeuangan/total_box.dart';
 import 'package:flutter/material.dart';
+
+import 'add_data.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,8 +22,9 @@ class _HomeState extends State<Home> {
         title: Text("Catatan Keuangan"),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddData()));
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddData()));
+        },
         child: Icon(Icons.add),
       ),
       body: Column(
