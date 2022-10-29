@@ -26,7 +26,7 @@ class _AddDataState extends State<AddData> {
                 keyboardType: TextInputType.number,
               )),
           Padding(
-              padding: const EdgeInsets.only(top: 14, left: 14, right: 14),
+              padding: const EdgeInsets.all(14),
               child: TextFormField(
                 decoration: InputDecoration(
                   hintText: 'Enter Title',
@@ -72,9 +72,12 @@ class _AddDataState extends State<AddData> {
             width: 14,
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            ElevatedButton(
-              onPressed: () {},
-              child: Container(width: 100, child: Text('Save')),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Container(width: 100, child: Text('Save')),
+              ),
             )
           ])
         ]));
