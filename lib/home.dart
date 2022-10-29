@@ -1,3 +1,4 @@
+import 'package:catatankeuangan/entry_card.dart';
 import 'package:catatankeuangan/total_box.dart';
 import 'package:flutter/material.dart';
 
@@ -32,13 +33,34 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     TotalBox(title: "Pemasukan", amount: "0"),
+                    SizedBox(
+                      height: 26,
+                      child: VerticalDivider(
+                        thickness: 1,
+                        width: 1,
+                        color: Colors.grey,
+                      ),
+                    ),
                     TotalBox(title: "Pengeluaran", amount: "0"),
+                    SizedBox(
+                      height: 26,
+                      child: VerticalDivider(
+                        thickness: 1,
+                        width: 1,
+                        color: Colors.grey,
+                      ),
+                    ),
                     TotalBox(title: "Saldo", amount: "0")
                   ],
                 ),
               ),
             ),
-          )
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          EntryCard(title: "Makanan", amount: "20000", type: "cr"),
+          EntryCard(title: "Uang Saku", amount: "100000", type: "dr"),
         ],
       ),
     );
