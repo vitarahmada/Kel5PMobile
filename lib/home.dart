@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:catatankeuangan/entry_card.dart';
 import 'package:catatankeuangan/total_box.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddData()));
         child: Icon(Icons.add),
       ),
       body: Column(
