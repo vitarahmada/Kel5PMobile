@@ -5,6 +5,7 @@ import 'package:catatankeuangan/total_box.dart';
 import 'package:flutter/material.dart';
 
 import 'add_data.dart';
+import 'data.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -65,8 +66,14 @@ class _HomeState extends State<Home> {
           SizedBox(
             height: 10,
           ),
-          EntryCard(title: "Makanan", amount: "20000", type: "cr"),
-          EntryCard(title: "Uang Saku", amount: "100000", type: "dr"),
+          Expanded(
+            child:ListView.builder(
+              itemCount: dataList.length,
+                itemBuilder: ((context, index) => EntryCard(
+                    title: dataList[index].title,
+                    amount: dataList[index].amount.toString(),
+                    type: dataList[index].type)))
+          )
         ],
       ),
     );

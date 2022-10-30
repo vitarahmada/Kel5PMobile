@@ -10,6 +10,10 @@ class AddData extends StatefulWidget {
 class _AddDataState extends State<AddData> {
   String type = 'dr'; // cr = income, dr = expense
 
+  //controller
+  TextEditingController amountCont = TextEditingController();
+  TextEditingController titleCont = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +24,7 @@ class _AddDataState extends State<AddData> {
           Padding(
               padding: const EdgeInsets.only(top: 14, left: 14, right: 14),
               child: TextFormField(
+                controller: amountCont,
                 decoration: InputDecoration(
                   hintText: 'Enter Amount',
                 ),
@@ -28,6 +33,7 @@ class _AddDataState extends State<AddData> {
           Padding(
               padding: const EdgeInsets.all(14),
               child: TextFormField(
+                controller: titleCont,
                 decoration: InputDecoration(
                   hintText: 'Enter Title',
                 ),
