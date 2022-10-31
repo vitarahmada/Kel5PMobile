@@ -1,4 +1,7 @@
+import 'package:catatankeuangan/data.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'transaction.dart';
 
 class AddData extends StatefulWidget {
   const AddData({Key? key}) : super(key: key);
@@ -13,6 +16,17 @@ class _AddDataState extends State<AddData> {
   //controller
   TextEditingController amountCont = TextEditingController();
   TextEditingController titleCont = TextEditingController();
+
+  ShowToastMsg(String msg, {Color c = Colors.red}) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +95,21 @@ class _AddDataState extends State<AddData> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: ElevatedButton(
-                onPressed: () {},
-                child: Container(width: 100, child: Text('Save')),
+                onPressed: () {
+                  if (amountCont.text.isEmpty) {
+                    ShowToastMsg('Enter Valid Amount');
+                    return;
+                  }
+                  if (titleCont.text.isEmpty) {
+                    ShowToastMsg('Enter Valid Title');
+                    return;
+                  }
+
+                  dataList.add(Transaction(titleCont.text.trim(),
+                      double.parse(amountCont.text.trim()), type));
+                },
+                child:
+                    Container(width: 100, child: Center(child: Text('Save'))),
               ),
             )
           ])

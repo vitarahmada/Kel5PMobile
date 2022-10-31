@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
           ),
           Expanded(
             child:ListView.builder(
-              itemCount: dataList.length,
+                itemCount: dataList.length,
                 itemBuilder: ((context, index) => EntryCard(
                     title: dataList[index].title,
                     amount: dataList[index].amount.toString(),
