@@ -15,6 +15,34 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  double totalIncome = 0;
+  double totalExpenses = 0;
+  double totalBalance = 0;
+
+  calculate() {
+    totalIncome = 0;
+    totalExpenses = 0;
+    totalBalance = 0;
+    dataList.forEach((element) {
+      if (element.type == 'cr') {
+        totalIncome += element.amount;
+      } else {
+        totalExpenses += element.amount;
+      }
+
+      setState(() {
+        totalBalance = totalIncome - totalExpenses;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    calculate();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +67,7 @@ class _HomeState extends State<Home> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    TotalBox(title: "Pemasukan", amount: "0"),
+                    TotalBox(title: "Pemasukan", amount: '$totalIncome'),
                     SizedBox(
                       height: 26,
                       child: VerticalDivider(
@@ -48,7 +76,7 @@ class _HomeState extends State<Home> {
                         color: Colors.grey,
                       ),
                     ),
-                    TotalBox(title: "Pengeluaran", amount: "0"),
+                    TotalBox(title: "Pengeluaran", amount: '$totalExpenses'),
                     SizedBox(
                       height: 26,
                       child: VerticalDivider(
@@ -57,7 +85,7 @@ class _HomeState extends State<Home> {
                         color: Colors.grey,
                       ),
                     ),
-                    TotalBox(title: "Saldo", amount: "0")
+                    TotalBox(title: "Saldo", amount: '$totalBalance')
                   ],
                 ),
               ),
@@ -67,12 +95,18 @@ class _HomeState extends State<Home> {
             height: 10,
           ),
           Expanded(
-            child:ListView.builder(
-                itemCount: dataList.length,
-                itemBuilder: ((context, index) => EntryCard(
-                    title: dataList[index].title,
-                    amount: dataList[index].amount.toString(),
-                    type: dataList[index].type)))
+              child:RefreshIndicator(
+                onRefresh: () {
+                  calculate();
+                  return Future.delayed(Duration(seconds: 1));
+                },
+                child: ListView.builder(
+                    itemCount: dataList.length,
+                    itemBuilder: ((context, index) => EntryCard(
+                        title: dataList[index].title,
+                        amount: dataList[index].amount.toString(),
+                        type: dataList[index].type))),
+              )
           )
         ],
       ),
