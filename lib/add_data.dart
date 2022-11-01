@@ -70,7 +70,7 @@ class _AddDataState extends State<AddData> {
                 },
                 child: Chip(
                     backgroundColor:
-                        type == 'cr' ? Colors.orange : Colors.grey[200],
+                    type == 'cr' ? Colors.orange : Colors.grey[200],
                     label: Text('Income')),
               ),
               SizedBox(
@@ -83,7 +83,7 @@ class _AddDataState extends State<AddData> {
                 },
                 child: Chip(
                     backgroundColor:
-                        type == 'dr' ? Colors.orange : Colors.grey[200],
+                    type == 'dr' ? Colors.orange : Colors.grey[200],
                     label: Text('Expense')),
               )
             ],
@@ -107,9 +107,11 @@ class _AddDataState extends State<AddData> {
 
                   dataList.add(Transaction(titleCont.text.trim(),
                       double.parse(amountCont.text.trim()), type));
+
+                  ShowToastMsg('Saved!', c: Colors.green);
                 },
                 child:
-                    Container(width: 100, child: Center(child: Text('Save'))),
+                Container(width: 100, child: Center(child: Text('Save'))),
               ),
             )
           ])
