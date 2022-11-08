@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:catatankeuangan/data.dart';
+import 'package:catatankeuangan/transaction.dart';
 
-class AddData extends StatefulWidget {
-  const AddData ({Key? key}) : super(key: key);
+class UpdateScreen extends StatefulWidget {
+  final TransaksiModel transaksiMmodel;
+  const UpdateScreen({Key? key, required this.transaksiMmodel})
+      : super(key: key);
 
   @override
-  State<AddData> createState() => _AddDataState();
+  State<UpdateScreen> createState() => _UpdateScreenState();
 }
 
-class _AddDataState extends State<AddData> {
+class _UpdateScreenState extends State<UpdateScreen> {
   DatabaseInstance databaseInstance = DatabaseInstance();
   TextEditingController nameController = TextEditingController();
   TextEditingController totalController = TextEditingController();
@@ -16,7 +21,12 @@ class _AddDataState extends State<AddData> {
 
   @override
   void initState() {
+    // TODO: implement initState
     databaseInstance.database();
+    nameController.text = widget.transaksiMmodel.name!;
+    totalController.text = widget.transaksiMmodel.total!.toString();
+    _value = widget.transaksiMmodel.type!;
+
     super.initState();
   }
 
@@ -24,7 +34,7 @@ class _AddDataState extends State<AddData> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create"),
+        title: Text("Update"),
       ),
       body: SafeArea(
           child: Padding(
@@ -74,17 +84,15 @@ class _AddDataState extends State<AddData> {
             ),
             ElevatedButton(
                 onPressed: () async {
-                  int idInsert = await databaseInstance.insert({
+                  await databaseInstance.update(widget.transaksiMmodel.id!, {
                     'name': nameController.text,
                     'type': _value,
                     'total': totalController.text,
-                    'created_at': DateTime.now().toString(),
-                    'updated_at': DateTime.now().toString(),
+                    'updated_at': DateTime.now().toString()
                   });
-                  print("sudah masuk : " + idInsert.toString());
                   Navigator.pop(context);
                 },
-                child: Text("Simpan")),
+                child: Text("Update")),
           ],
         ),
       )),

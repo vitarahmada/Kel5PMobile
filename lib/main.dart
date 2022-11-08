@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './home.dart';
 
 void main() {
-  runApp(new MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Catatan Keuangan",
       theme: ThemeData(primarySwatch: Colors.orange),
-      home: new Home(),
+      home: MyHomePage(),
     );
   }
 }
