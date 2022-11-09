@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'package:catatankeuangan/data.dart';
 import 'package:catatankeuangan/transaction.dart';
 import 'package:catatankeuangan/add_data.dart';
-//import 'package:catatankeuangan/update_data.dart';
+import 'package:catatankeuangan/update_data.dart';
 
 /* void main() {
   runApp(Home());
@@ -156,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     children: [
                                       IconButton(
                                           onPressed: () {
-                                            /* Navigator.of(context)
+                                            Navigator.of(context)
                                                 .push(MaterialPageRoute(
                                                     builder: (context) =>
                                                         UpdateScreen(
@@ -166,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         )))
                                                 .then((value) {
                                               setState(() {});
-                                            }); */
+                                            });
                                           },
                                           icon: Icon(
                                             Icons.edit,
@@ -204,5 +204,167 @@ class _MyHomePageState extends State<MyHomePage> {
         )),
       ),
     );
+  }
+} */
+
+import 'package:flutter/material.dart';
+import 'databaseHelper.dart';
+import 'add_data.dart';
+
+/* void main() {
+  runApp(const MyApp());
+} */
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // All wishlist
+  List<Map<String, dynamic>> _daftar_ = [];
+
+  bool _isLoading = true;
+  // This function is used to fetch all data from the database
+  void _refreshWishlist() async {
+    final data = await SQLHelper.getItems();
+    setState(() {
+      _daftar_ = data;
+      _isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshWishlist(); // Loading the wishlist when the app starts
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+            title: const Text('Catatan Keuangan',
+                style: TextStyle(color: Colors.black))),
+        body: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(children: [
+                Flexible(
+                    flex: 1,
+                    child: Row(children: [
+                      Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: Container(
+                            color: Color.fromARGB(255, 188, 206, 248),
+                            child: Column(
+                              children: [
+                                Text("Saldo : "),
+                                Text("Total Pemasukan : "),
+                                Text("Total Pengeluaran : ")
+                              ],
+                            ),
+                          ))
+                    ])),
+                Flexible(
+                    flex: 4,
+                    child: Container(
+                      child: ListView.builder(
+                        itemCount: _daftar_.length,
+                        itemBuilder: (context, index) => Card(
+                          margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          child: ListTile(
+                            leading: Container(
+                              width: 60,
+                              decoration: BoxDecoration(border: Border.all()),
+                              child: Text(_daftar_[index]['createdAt'], textAlign: TextAlign.center,)
+                            ),
+                              tileColor: _daftar_[index]['type'] == 1
+                                  ? Colors.green
+                                  : Colors.redAccent,
+                              title: Text(_daftar_[index]['name']),
+                              subtitle:
+                                  Text((_daftar_[index]['total'].toString())),
+                              trailing: SizedBox(
+                                width: 100,
+                                child: Row(
+                                  children: [
+                                    Flexible(
+                                        flex: 1,
+                                        child: IconButton(
+                                            icon: const Icon(Icons.visibility),
+                                            onPressed:
+                                                () {} /* =>
+                                          _viewForm(_daftar_[index]['id']),*/
+                                            )),
+                                    Flexible(
+                                        flex: 1,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          onPressed:
+                                              () {} /* =>
+                                          _updateForm(_daftar_[index]['id']) */
+                                          ,
+                                        )),
+                                    Flexible(
+                                      flex: 1,
+                                      child: IconButton(
+                                        icon: const Icon(Icons.delete),
+                                        onPressed: () =>
+                                            _deleteItem(_daftar_[index]['id']),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ),
+                      ),
+                    )),
+              ]),
+        backgroundColor: Colors.black,
+        floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.add),
+            foregroundColor: Colors.black,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return FormWishlist();
+              }));
+            }));
+  }
+
+  // Delete an item
+  void _deleteItem(int id) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text('Anda yakin ingin menghapus wishlist?'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () async {
+                    await SQLHelper.deleteItem(id);
+                    // ignore: use_build_context_synchronously
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text('Successfully deleted a wishlist!'),
+                    ));
+                    Navigator.pop(context);
+                    _refreshWishlist();
+                  },
+                  child: Text('Ya')),
+              TextButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Deleting is cancelled!')));
+                  Navigator.pop(context);
+                },
+                child: Text('Tidak'),
+              )
+            ],
+          );
+        });
   }
 }

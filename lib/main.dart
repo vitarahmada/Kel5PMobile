@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Catatan Keuangan",
       theme: ThemeData(primarySwatch: Colors.orange),
-      home: MyHomePage(),
+      home: HomePage(),
     );
   }
 }
