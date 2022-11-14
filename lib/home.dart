@@ -1,115 +1,248 @@
-//import 'dart:html';
-
-import 'package:catatankeuangan/entry_card.dart';
-import 'package:catatankeuangan/total_box.dart';
 import 'package:flutter/material.dart';
+import 'database_instance.dart';
+import 'create_screen.dart';
+import 'update_screen.dart';
 
-import 'add_data.dart';
-import 'data.dart';
-
-class Home extends StatefulWidget {
-  const Home({super.key});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _HomeState extends State<Home> {
-  double totalIncome = 0;
-  double totalExpenses = 0;
-  double totalBalance = 0;
+class _MyHomePageState extends State<MyHomePage> {
+  DatabaseInstance? databaseInstance;
 
-  calculate() {
-    totalIncome = 0;
-    totalExpenses = 0;
-    totalBalance = 0;
-    dataList.forEach((element) {
-      if (element.type == 'cr') {
-        totalIncome += element.amount;
-      } else {
-        totalExpenses += element.amount;
-      }
-
-      setState(() {
-        totalBalance = totalIncome - totalExpenses;
-      });
-    });
+  Future _refresh() async {
+    setState(() {});
   }
 
   @override
   void initState() {
-    // TODO: implement initState
+    databaseInstance = DatabaseInstance();
     super.initState();
-    calculate();
+    initDatabase();
+  }
+
+  Future initDatabase() async {
+    await databaseInstance!.database();
+    setState(() {});
+  }
+
+  showAlertDialog(BuildContext contex, int idTransaksi) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text("Peringatan!"),
+      content: Text("Apakah Anda yakin ingin menghapus?"),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Deleting is cancelled!')));
+            Navigator.pop(context);
+          },
+          child: Text('Tidak'),
+        ),
+        TextButton(
+            onPressed: () async {
+              databaseInstance!.hapus(idTransaksi);
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('Successfully deleted a wishlist!'),
+              ));
+              Navigator.of(contex, rootNavigator: true).pop();
+              _refresh();
+            },
+            child: Text('Ya')),
+      ],
+    );
+
+    showDialog(
+        context: contex,
+        builder: (BuildContext context) {
+          return alertDialog;
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
-      appBar: AppBar(
-        title: Text("Catatan Keuangan"),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddData()));
-        },
-        child: Icon(Icons.add),
-      ),
-      body: Column(
-        // SUB MENU
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 14, left: 14, right: 14),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    TotalBox(title: "Pemasukan", amount: '$totalIncome'),
-                    SizedBox(
-                      height: 26,
-                      child: VerticalDivider(
-                        thickness: 1,
-                        width: 1,
-                        color: Colors.grey,
+        appBar: AppBar(
+          title: Text("Catatan Keuangan"),
+          elevation: 5.0,
+        ),
+        body: RefreshIndicator(
+          onRefresh: _refresh,
+          child: Column(children: [
+            Flexible(
+                flex: 1,
+                child: Row(children: [
+                  Flexible(
+                    flex: 3,
+                    fit: FlexFit.tight,
+                    child: Container(
+                      color: Color.fromARGB(255, 188, 206, 248),
+                      child: Column(
+                        children: [
+                          Padding(padding: EdgeInsets.all(10)),
+                          Flexible(
+                            flex: 1,
+                            child: FutureBuilder(
+                                future: databaseInstance!.saldo(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Text("-");
+                                  } else {
+                                    if (snapshot.hasData) {
+                                      return Text(
+                                          "Saldo : Rp. ${snapshot.data.toString()}");
+                                    } else {
+                                      return Text("");
+                                    }
+                                  }
+                                }),
+                          ),
+                          Flexible(
+                              flex: 1,
+                              child: FutureBuilder(
+                                  future: databaseInstance!.totalPemasukan(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Text("-");
+                                    } else {
+                                      if (snapshot.hasData) {
+                                        return Text(
+                                            "Total pemasukan : Rp. ${snapshot.data.toString()}");
+                                      } else {
+                                        return Text("");
+                                      }
+                                    }
+                                  })),
+                          Flexible(
+                            flex: 1,
+                            child: FutureBuilder(
+                                future: databaseInstance!.totalPengeluaran(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Text("-");
+                                  } else {
+                                    if (snapshot.hasData) {
+                                      return Text(
+                                          "Total pengeluaran : Rp. ${snapshot.data.toString()}");
+                                    } else {
+                                      return Text("");
+                                    }
+                                  }
+                                }),
+                          ),
+                          Padding(padding: EdgeInsets.all(10)),
+                        ],
                       ),
                     ),
-                    TotalBox(title: "Pengeluaran", amount: '$totalExpenses'),
-                    SizedBox(
-                      height: 26,
-                      child: VerticalDivider(
-                        thickness: 1,
-                        width: 1,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    TotalBox(title: "Saldo", amount: '$totalBalance')
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-              child:RefreshIndicator(
-                onRefresh: () {
-                  calculate();
-                  return Future.delayed(Duration(seconds: 1));
-                },
-                child: ListView.builder(
-                    itemCount: dataList.length,
-                    itemBuilder: ((context, index) => EntryCard(
-                        title: dataList[index].title,
-                        amount: dataList[index].amount.toString(),
-                        type: dataList[index].type))),
-              )
-          )
-        ],
-      ),
-    );
+                  )
+                ])),
+            Padding(padding: EdgeInsets.all(3)),
+            Flexible(
+                flex: 1,
+                child: Text(
+                  "History",
+                  style: TextStyle(fontSize: 30),
+                )),
+            Flexible(
+                flex: 4,
+                child: FutureBuilder(
+                    future: databaseInstance!.getAll(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text("Loading");
+                      } else {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  margin:
+                                      const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                                  child: ListTile(
+                                      onTap: () {},
+                                      leading: Container(
+                                        width: 50,
+                                        child: snapshot.data![index].type == 1
+                                            ? IconButton(
+                                                icon: Icon(Icons.download),
+                                                color: Colors.green,
+                                                onPressed: () {},
+                                              )
+                                            : IconButton(
+                                                icon: Icon(Icons.upload),
+                                                color: Colors.redAccent,
+                                                onPressed: () {},
+                                              ),
+                                      ),
+                                      tileColor:
+                                          Color.fromARGB(255, 188, 206, 248),
+                                      title: Text(snapshot.data![index].kategori!.toString() +
+                                          " : " +
+                                          snapshot.data![index].total
+                                              .toString()),
+                                      subtitle: Text((snapshot
+                                          .data![index].updatedAt
+                                          .toString())),
+                                      trailing: SizedBox(
+                                        width: 70,
+                                        child: Row(
+                                          children: [
+                                            Flexible(
+                                                flex: 1,
+                                                child: IconButton(
+                                                    icon:
+                                                        const Icon(Icons.edit),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .push(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          UpdateScreen(
+                                                                            transaksiMmodel:
+                                                                                snapshot.data![index],
+                                                                          )))
+                                                          .then((value) {
+                                                        setState(() {});
+                                                      });
+                                                    })),
+                                            Flexible(
+                                              flex: 1,
+                                              child: IconButton(
+                                                  icon:
+                                                      const Icon(Icons.delete),
+                                                  onPressed: () {
+                                                    showAlertDialog(
+                                                        context,
+                                                        snapshot
+                                                            .data![index].id!);
+                                                  }),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                );
+                              });
+                        } else {
+                          return Text("Tidak ada data");
+                        }
+                      }
+                    })),
+          ]),
+        ),
+        floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.add),
+            foregroundColor: Colors.black,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return CreateScreen();
+              }));
+            }));
   }
 }

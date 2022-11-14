@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './home.dart';
 
 void main() {
-  runApp(new MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -11,8 +11,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Catatan Keuangan",
-      theme: ThemeData(primarySwatch: Colors.orange),
-      home: new Home(),
+      theme: ThemeData(primarySwatch: Colors.lightBlue),
+      home: MyHomePage(),
     );
   }
 }
