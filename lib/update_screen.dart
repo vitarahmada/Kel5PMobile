@@ -48,7 +48,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Update"),
+        title: const Text("Update"),
         elevation: 10,
       ),
       body: SingleChildScrollView(
@@ -58,10 +58,10 @@ class _UpdateScreenState extends State<UpdateScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Text("Kategori"),
+              const Text("Kategori"),
               DropdownButton<String>(
                 value: dropdownValue,
                 icon: const Icon(Icons.arrow_downward),
@@ -69,7 +69,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                 style: const TextStyle(color: Colors.black),
                 underline: Container(
                   height: 2,
-                  color: Color.fromARGB(255, 1, 100, 5),
+                  color: const Color.fromARGB(255, 1, 100, 5),
                 ),
                 onChanged: (String? value) {
                   setState(() {
@@ -83,12 +83,12 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   );
                 }).toList(),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Text("Tipe Transaksi"),
+              const Text("Tipe Transaksi"),
               ListTile(
-                title: Text("Pemasukan"),
+                title: const Text("Pemasukan"),
                 leading: Radio(
                     groupValue: _value,
                     value: 1,
@@ -99,7 +99,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                     }),
               ),
               ListTile(
-                title: Text("Pengeluaran"),
+                title: const Text("Pengeluaran"),
                 leading: Radio(
                     groupValue: _value,
                     value: 2,
@@ -109,21 +109,21 @@ class _UpdateScreenState extends State<UpdateScreen> {
                       });
                     }),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Text("Jumlah"),
+              const Text("Jumlah"),
               TextField(
                 controller: totalController,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Text("Keterangan"),
+              const Text("Keterangan"),
               TextField(
                 controller: ketController,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
@@ -140,7 +140,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                     // print("sudah masuk : " + idInsert.toString());
                     Navigator.pop(context);
                   },
-                  child: Text("Simpan")),
+                  child: const Text("Simpan")),
             ],
           ),
         )),

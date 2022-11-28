@@ -32,7 +32,7 @@ class _CreateScreenState extends State<CreateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text("Create"),
+            title: const Text("Create"),
             elevation: 10,
             ),
         body: SingleChildScrollView(
@@ -42,18 +42,26 @@ class _CreateScreenState extends State<CreateScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Text("Kategori"),
+                const Text("Jumlah"),
+                TextField(
+                  controller: totalController,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text("Kategori"),
                 DropdownButton<String>(
                   value: dropdownValue,
-                  icon: const Icon(Icons.arrow_downward),
+                  icon: const Icon(Icons.arrow_drop_down, color: Color.fromARGB(255, 188, 206, 248)),
                   elevation: 16,
                   style: const TextStyle(color: Colors.black),
                   underline: Container(
                     height: 2,
-                    color: Color.fromARGB(255, 1, 100, 5),
+                    width: 5,
+                    color: const Color.fromARGB(255, 1, 100, 5),
                   ),
                   onChanged: (String? value) {
                     setState(() {
@@ -67,12 +75,12 @@ class _CreateScreenState extends State<CreateScreen> {
                     );
                   }).toList(),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Text("Tipe Transaksi"),
+                const Text("Tipe Transaksi"),
                 ListTile(
-                  title: Text("Pemasukan"),
+                  title: const Text("Pemasukan"),
                   leading: Radio(
                       groupValue: _value,
                       value: 1,
@@ -83,7 +91,7 @@ class _CreateScreenState extends State<CreateScreen> {
                       }),
                 ),
                 ListTile(
-                  title: Text("Pengeluaran"),
+                  title: const Text("Pengeluaran"),
                   leading: Radio(
                       groupValue: _value,
                       value: 2,
@@ -93,26 +101,18 @@ class _CreateScreenState extends State<CreateScreen> {
                         });
                       }),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Text("Jumlah"),
-                TextField(
-                  controller: totalController,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text("Keterangan"),
+                const Text("Keterangan"),
                 TextField(
                   controller: ketController,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      color:
                       Colors.black;
                       int total = int.parse(totalController.text);
                       await databaseInstance.insert({
@@ -127,7 +127,7 @@ class _CreateScreenState extends State<CreateScreen> {
                       //print("sudah masuk : " + idInsert.toString());
                       Navigator.pop(context);
                     },
-                    child: Text("Simpan")),
+                    child: const Text("Simpan")),
               ],
             ),
           )),

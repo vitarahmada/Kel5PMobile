@@ -31,8 +31,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   showAlertDialog(BuildContext contex, int idTransaksi) {
     AlertDialog alertDialog = AlertDialog(
-      title: Text("Peringatan!"),
-      content: Text("Apakah Anda yakin ingin menghapus?"),
+      title: const Text("Peringatan!"),
+      content: const Text("Apakah Anda yakin ingin menghapus?"),
       actions: <Widget>[
         TextButton(
           onPressed: () {
@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SnackBar(content: Text('Deleting is cancelled!')));
             Navigator.pop(context);
           },
-          child: Text('Tidak'),
+          child: const Text('Tidak'),
         ),
         TextButton(
             onPressed: () async {
@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.of(contex, rootNavigator: true).pop();
               _refresh();
             },
-            child: Text('Ya')),
+            child: const Text('Ya')),
       ],
     );
 
@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Catatan Keuangan"),
+          title: const Text("Catatan Keuangan"),
           elevation: 5.0,
         ),
         body: RefreshIndicator(
@@ -79,10 +79,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     flex: 3,
                     fit: FlexFit.tight,
                     child: Container(
-                      color: Color.fromARGB(255, 188, 206, 248),
+                      color: const Color.fromARGB(255, 188, 206, 248),
                       child: Column(
                         children: [
-                          Padding(padding: EdgeInsets.all(10)),
+                          const Padding(padding: EdgeInsets.all(10)),
                           Flexible(
                             flex: 1,
                             child: FutureBuilder(
@@ -90,13 +90,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return Text("-");
+                                    return const Text("-");
                                   } else {
                                     if (snapshot.hasData) {
                                       return Text(
                                           "Saldo : Rp. ${snapshot.data.toString()}");
                                     } else {
-                                      return Text("");
+                                      return const Text("");
                                     }
                                   }
                                 }),
@@ -108,13 +108,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
-                                      return Text("-");
+                                      return const Text("-");
                                     } else {
                                       if (snapshot.hasData) {
                                         return Text(
                                             "Total pemasukan : Rp. ${snapshot.data.toString()}");
                                       } else {
-                                        return Text("");
+                                        return const Text("");
                                       }
                                     }
                                   })),
@@ -125,25 +125,25 @@ class _MyHomePageState extends State<MyHomePage> {
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return Text("-");
+                                    return const Text("-");
                                   } else {
                                     if (snapshot.hasData) {
                                       return Text(
                                           "Total pengeluaran : Rp. ${snapshot.data.toString()}");
                                     } else {
-                                      return Text("");
+                                      return const Text("");
                                     }
                                   }
                                 }),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          const Padding(padding: EdgeInsets.all(10)),
                         ],
                       ),
                     ),
                   )
                 ])),
-            Padding(padding: EdgeInsets.all(3)),
-            Flexible(
+            const Padding(padding: EdgeInsets.all(3)),
+            const Flexible(
                 flex: 1,
                 child: Text(
                   "History",
@@ -155,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     future: databaseInstance!.getAll(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Text("Loading");
+                        return const Text("Loading");
                       } else {
                         if (snapshot.hasData) {
                           return ListView.builder(
@@ -166,26 +166,23 @@ class _MyHomePageState extends State<MyHomePage> {
                                       const EdgeInsets.fromLTRB(20, 5, 20, 5),
                                   child: ListTile(
                                       onTap: () {},
-                                      leading: Container(
+                                      leading: SizedBox(
                                         width: 50,
                                         child: snapshot.data![index].type == 1
                                             ? IconButton(
-                                                icon: Icon(Icons.download),
+                                                icon: const Icon(Icons.download),
                                                 color: Colors.green,
                                                 onPressed: () {},
                                               )
                                             : IconButton(
-                                                icon: Icon(Icons.upload),
+                                                icon: const Icon(Icons.upload),
                                                 color: Colors.redAccent,
                                                 onPressed: () {},
                                               ),
                                       ),
                                       tileColor:
-                                          Color.fromARGB(255, 188, 206, 248),
-                                      title: Text(snapshot.data![index].kategori!.toString() +
-                                          " : " +
-                                          snapshot.data![index].total
-                                              .toString()),
+                                          const Color.fromARGB(255, 188, 206, 248),
+                                      title: Text("${snapshot.data![index].kategori!} : ${snapshot.data![index].total}"),
                                       subtitle: Text((snapshot
                                           .data![index].updatedAt
                                           .toString())),
@@ -230,19 +227,19 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                               });
                         } else {
-                          return Text("Tidak ada data");
+                          return const Text("Tidak ada data");
                         }
                       }
                     })),
           ]),
         ),
         floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
             foregroundColor: Colors.black,
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CreateScreen();
+                return const CreateScreen();
               }));
-            }));
+            },
+            child: const Icon(Icons.add)));
   }
 }
