@@ -74,17 +74,20 @@ class DatabaseInstance {
     final queryKeluar = await _database?.rawQuery(
         "SELECT SUM(total) as totalPengeluaran FROM ${namaTabel} WHERE type = 2");
 
-    if (queryMasuk?.first['totalPemasukan'] == null && queryKeluar?.first['totalPengeluaran'] == null) {
+    if (queryMasuk?.first['totalPemasukan'] == null &&
+        queryKeluar?.first['totalPengeluaran'] == null) {
       return 0;
     }
-    if (queryMasuk?.first['totalPemasukan'] == null && queryKeluar?.first['totalPengeluaran'] != null) {
+    if (queryMasuk?.first['totalPemasukan'] == null &&
+        queryKeluar?.first['totalPengeluaran'] != null) {
       return (0 - int.parse(queryKeluar!.first['totalPengeluaran'].toString()));
     }
-    if (queryMasuk?.first['totalPemasukan'] != null && queryKeluar?.first['totalPengeluaran'] == null) {
+    if (queryMasuk?.first['totalPemasukan'] != null &&
+        queryKeluar?.first['totalPengeluaran'] == null) {
       return int.parse(queryMasuk!.first['totalPemasukan'].toString());
-    }
-    else {
-      return (int.parse(queryMasuk!.first['totalPemasukan'].toString()) - int.parse(queryKeluar!.first['totalPengeluaran'].toString()));
+    } else {
+      return (int.parse(queryMasuk!.first['totalPemasukan'].toString()) -
+          int.parse(queryKeluar!.first['totalPengeluaran'].toString()));
     }
   }
 
@@ -99,5 +102,15 @@ class DatabaseInstance {
     final query = await _database!
         .update(namaTabel, row, where: '$id = ?', whereArgs: [idTransaksi]);
     return query;
+  }
+
+  Future<List<Map<String, Object?>>> getPerDes(String bln) async {
+    print(bln);
+    final records = await _database?.rawQuery(
+        "SELECT * FROM $namaTabel WHERE updated_at BETWEEN '$bln/1/2022 12:00 AM' AND '$bln/31/2022 11:59 PM'");
+    if (records == null) {
+      return [];
+    }
+    return records;
   }
 }
