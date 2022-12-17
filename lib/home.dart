@@ -1,7 +1,15 @@
+import 'package:catatankeuangan/laporan.dart';
+import 'package:catatankeuangan/read_screen.dart';
 import 'package:flutter/material.dart';
 import 'database_instance.dart';
 import 'create_screen.dart';
 import 'update_screen.dart';
+
+
+enum MenuItem {
+  laporan,
+  about
+}
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -31,27 +39,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
   showAlertDialog(BuildContext contex, int idTransaksi) {
     AlertDialog alertDialog = AlertDialog(
-      title: Text("Peringatan!"),
-      content: Text("Apakah Anda yakin ingin menghapus?"),
+      title: const Text("Peringatan!"),
+      content: const Text("Apakah Anda yakin ingin menghapus?"),
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Deleting is cancelled!')));
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('Deleting is cancelled!'),
+                duration: Duration(seconds: 1)));
             Navigator.pop(context);
           },
-          child: Text('Tidak'),
+          child: const Text('Tidak'),
         ),
         TextButton(
             onPressed: () async {
               databaseInstance!.hapus(idTransaksi);
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text('Successfully deleted a wishlist!'),
+                duration: Duration(seconds: 1),
               ));
               Navigator.of(contex, rootNavigator: true).pop();
               _refresh();
             },
-            child: Text('Ya')),
+            child: const Text('Ya')),
       ],
     );
 
@@ -62,12 +72,32 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Catatan Keuangan"),
+          title: const Text("Catatan Keuangan"),
           elevation: 5.0,
+          actions: [PopupMenuButton(
+              onSelected: (value) {
+                if (value == MenuItem.laporan) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => LaporanPerBulan(),
+                  ));
+                }
+                else if (value == MenuItem.about) {
+
+                }
+              },
+              itemBuilder: ((context) => [
+                const PopupMenuItem(
+                    value: MenuItem.laporan,
+                    child: Text("Laporan")),
+                const PopupMenuItem(
+                    value: MenuItem.about,
+                    child: Text("About"))
+              ]))],
         ),
         body: RefreshIndicator(
           onRefresh: _refresh,
@@ -79,10 +109,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     flex: 3,
                     fit: FlexFit.tight,
                     child: Container(
-                      color: Color.fromARGB(255, 188, 206, 248),
+                      color: const Color.fromARGB(255, 188, 206, 248),
                       child: Column(
                         children: [
-                          Padding(padding: EdgeInsets.all(10)),
+                          const Padding(padding: EdgeInsets.all(10)),
                           Flexible(
                             flex: 1,
                             child: FutureBuilder(
@@ -90,13 +120,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return Text("-");
+                                    return const Text("-");
                                   } else {
                                     if (snapshot.hasData) {
                                       return Text(
                                           "Saldo : Rp. ${snapshot.data.toString()}");
                                     } else {
-                                      return Text("");
+                                      return const Text("");
                                     }
                                   }
                                 }),
@@ -108,13 +138,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
-                                      return Text("-");
+                                      return const Text("-");
                                     } else {
                                       if (snapshot.hasData) {
                                         return Text(
                                             "Total pemasukan : Rp. ${snapshot.data.toString()}");
                                       } else {
-                                        return Text("");
+                                        return const Text("");
                                       }
                                     }
                                   })),
@@ -125,25 +155,25 @@ class _MyHomePageState extends State<MyHomePage> {
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return Text("-");
+                                    return const Text("-");
                                   } else {
                                     if (snapshot.hasData) {
                                       return Text(
                                           "Total pengeluaran : Rp. ${snapshot.data.toString()}");
                                     } else {
-                                      return Text("");
+                                      return const Text("");
                                     }
                                   }
                                 }),
                           ),
-                          Padding(padding: EdgeInsets.all(10)),
+                          const Padding(padding: EdgeInsets.all(10)),
                         ],
                       ),
                     ),
                   )
                 ])),
-            Padding(padding: EdgeInsets.all(3)),
-            Flexible(
+            const Padding(padding: EdgeInsets.all(3)),
+            const Flexible(
                 flex: 1,
                 child: Text(
                   "History",
@@ -155,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     future: databaseInstance!.getAll(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Text("Loading");
+                        return const Text("Loading");
                       } else {
                         if (snapshot.hasData) {
                           return ListView.builder(
@@ -163,29 +193,34 @@ class _MyHomePageState extends State<MyHomePage> {
                               itemBuilder: (context, index) {
                                 return Card(
                                   margin:
-                                      const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                                  const EdgeInsets.fromLTRB(20, 5, 20, 5),
                                   child: ListTile(
-                                      onTap: () {},
-                                      leading: Container(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                                  return ReadScreen(transaksiMmodel: snapshot.data![index],);
+                                                })); /**/
+                                      },
+                                      leading: SizedBox(
                                         width: 50,
                                         child: snapshot.data![index].type == 1
                                             ? IconButton(
-                                                icon: Icon(Icons.download),
-                                                color: Colors.green,
-                                                onPressed: () {},
-                                              )
+                                          icon:
+                                          const Icon(Icons.download),
+                                          color: Colors.green,
+                                          onPressed: () {},
+                                        )
                                             : IconButton(
-                                                icon: Icon(Icons.upload),
-                                                color: Colors.redAccent,
-                                                onPressed: () {},
-                                              ),
+                                          icon: const Icon(Icons.upload),
+                                          color: Colors.redAccent,
+                                          onPressed: () {},
+                                        ),
                                       ),
-                                      tileColor:
-                                          Color.fromARGB(255, 188, 206, 248),
-                                      title: Text(snapshot.data![index].kategori!.toString() +
-                                          " : " +
-                                          snapshot.data![index].total
-                                              .toString()),
+                                      tileColor: const Color.fromARGB(
+                                          255, 188, 206, 248),
+                                      title: Text(
+                                          "${snapshot.data![index].kategori!} : ${snapshot.data![index].total}"),
                                       subtitle: Text((snapshot
                                           .data![index].updatedAt
                                           .toString())),
@@ -197,17 +232,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 flex: 1,
                                                 child: IconButton(
                                                     icon:
-                                                        const Icon(Icons.edit),
+                                                    const Icon(Icons.edit),
                                                     onPressed: () {
                                                       Navigator.of(context)
                                                           .push(
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          UpdateScreen(
-                                                                            transaksiMmodel:
-                                                                                snapshot.data![index],
-                                                                          )))
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                  UpdateScreen(
+                                                                    transaksiMmodel:
+                                                                    snapshot.data![index],
+                                                                  )))
                                                           .then((value) {
                                                         setState(() {});
                                                       });
@@ -216,7 +251,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               flex: 1,
                                               child: IconButton(
                                                   icon:
-                                                      const Icon(Icons.delete),
+                                                  const Icon(Icons.delete),
                                                   onPressed: () {
                                                     showAlertDialog(
                                                         context,
@@ -230,19 +265,19 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                               });
                         } else {
-                          return Text("Tidak ada data");
+                          return const Text("Tidak ada data");
                         }
                       }
                     })),
           ]),
         ),
         floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
             foregroundColor: Colors.black,
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CreateScreen();
+                return const CreateScreen();
               }));
-            }));
+            },
+            child: const Icon(Icons.add)));
   }
 }
