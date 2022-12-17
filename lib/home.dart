@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'database_instance.dart';
 import 'create_screen.dart';
 import 'update_screen.dart';
+import 'about.dart';
 
 
 enum MenuItem {
@@ -87,7 +88,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   ));
                 }
                 else if (value == MenuItem.about) {
-
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AboutUs()
+                  ));
                 }
               },
               itemBuilder: ((context) => [
