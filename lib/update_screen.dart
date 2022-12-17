@@ -35,7 +35,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
   void initState() {
     // implementasi initState
     databaseInstance.database();
-    formattedDateUpdated = widget.transaksiMmodel.updatedAt!;
+    //formattedDateUpdated = widget.transaksiMmodel.updatedAt!;
     dropdownValue = widget.transaksiMmodel.kategori!;
     ketController.text = widget.transaksiMmodel.ket!;
     totalController.text = widget.transaksiMmodel.total.toString();
@@ -48,7 +48,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Update"),
+        title: const Text("Update"),
         elevation: 10,
       ),
       body: SingleChildScrollView(
@@ -58,18 +58,32 @@ class _UpdateScreenState extends State<UpdateScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Text("Kategori"),
+              Text(
+                "Tanggal : $formattedDateUpdated",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text("Jumlah"),
+              TextField(
+                controller: totalController,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text("Kategori"),
               DropdownButton<String>(
                 value: dropdownValue,
-                icon: const Icon(Icons.arrow_downward),
+                icon: const Icon(Icons.arrow_drop_down_outlined),
                 elevation: 16,
                 style: const TextStyle(color: Colors.black),
                 underline: Container(
                   height: 2,
-                  color: Color.fromARGB(255, 1, 100, 5),
+                  color: const Color.fromARGB(255, 1, 100, 5),
                 ),
                 onChanged: (String? value) {
                   setState(() {
@@ -83,12 +97,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   );
                 }).toList(),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Text("Tipe Transaksi"),
-              ListTile(
-                title: Text("Pemasukan"),
+              /* ListTile(
+                title: const Text("Pemasukan"),
                 leading: Radio(
                     groupValue: _value,
                     value: 1,
@@ -99,7 +109,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                     }),
               ),
               ListTile(
-                title: Text("Pengeluaran"),
+                title: const Text("Pengeluaran"),
                 leading: Radio(
                     groupValue: _value,
                     value: 2,
@@ -108,22 +118,52 @@ class _UpdateScreenState extends State<UpdateScreen> {
                         _value = int.parse(value.toString());
                       });
                     }),
-              ),
-              SizedBox(
+              ), */
+              const SizedBox(
                 height: 20,
               ),
-              Text("Jumlah"),
-              TextField(
-                controller: totalController,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text("Keterangan"),
+              const Text("Keterangan"),
               TextField(
                 controller: ketController,
               ),
-              SizedBox(
+              const SizedBox(
+                height: 20,
+              ),
+              //const Text("Tipe Transaksi"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Type :'),
+                  SizedBox(
+                    width: 14,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      _value = 1;
+
+                      setState(() {});
+                    },
+                    child: Chip(
+                        backgroundColor:
+                            _value == 1 ? Colors.blueGrey : Colors.grey[200],
+                        label: Text('Income')),
+                  ),
+                  SizedBox(
+                    width: 14,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      _value = 0;
+                      setState(() {});
+                    },
+                    child: Chip(
+                        backgroundColor:
+                            _value == 0 ? Colors.blueGrey : Colors.grey[200],
+                        label: Text('Expense')),
+                  )
+                ],
+              ),
+              const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
@@ -138,9 +178,10 @@ class _UpdateScreenState extends State<UpdateScreen> {
                       'updated_at': formattedDateUpdated,
                     });
                     // print("sudah masuk : " + idInsert.toString());
+                    // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   },
-                  child: Text("Simpan")),
+                  child: const Text("Simpan")),
             ],
           ),
         )),
