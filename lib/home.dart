@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'database_instance.dart';
 import 'create_screen.dart';
+import 'laporan.dart';
 import 'update_screen.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -165,12 +166,19 @@ class _MyHomePageState extends State<MyHomePage> {
                                   margin:
                                       const EdgeInsets.fromLTRB(20, 5, 20, 5),
                                   child: ListTile(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return OrderBy();
+                                        }));
+                                      },
                                       leading: SizedBox(
                                         width: 50,
                                         child: snapshot.data![index].type == 1
                                             ? IconButton(
-                                                icon: const Icon(Icons.download),
+                                                icon:
+                                                    const Icon(Icons.download),
                                                 color: Colors.green,
                                                 onPressed: () {},
                                               )
@@ -180,9 +188,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 onPressed: () {},
                                               ),
                                       ),
-                                      tileColor:
-                                          const Color.fromARGB(255, 188, 206, 248),
-                                      title: Text("${snapshot.data![index].kategori!} : ${snapshot.data![index].total}"),
+                                      tileColor: const Color.fromARGB(
+                                          255, 188, 206, 248),
+                                      title: Text(
+                                          "${snapshot.data![index].kategori!} : ${snapshot.data![index].total}"),
                                       subtitle: Text((snapshot
                                           .data![index].updatedAt
                                           .toString())),
