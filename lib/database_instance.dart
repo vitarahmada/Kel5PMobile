@@ -33,7 +33,7 @@ class DatabaseInstance {
 
   Future _onCreate(Database db, int version) async {
     await db.execute(
-        'CREATE TABLE ${namaTabel} ($id INTEGER PRIMARY KEY, $ket TEXT NULL, $kategori TEXT NULL, $type INTEGER, $total INTEGER ,$createdAt TEXT NULL, $updatedAt TEXT NULL)');
+        'CREATE TABLE $namaTabel ($id INTEGER PRIMARY KEY, $ket TEXT NULL, $kategori TEXT NULL, $type INTEGER, $total INTEGER ,$createdAt TEXT NULL, $updatedAt TEXT NULL)');
   }
 
   Future<List<TransaksiModel>> getAll() async {
@@ -51,7 +51,7 @@ class DatabaseInstance {
 
   Future<int> totalPemasukan() async {
     final queryMasuk = await _database?.rawQuery(
-        "SELECT SUM(total) as totalPemasukan FROM ${namaTabel} WHERE type = 1");
+        "SELECT SUM(total) as totalPemasukan FROM $namaTabel WHERE type = 1");
     if (queryMasuk?.first['totalPemasukan'] == null) {
       return 0;
     }
@@ -60,7 +60,7 @@ class DatabaseInstance {
 
   Future<int> totalPengeluaran() async {
     final queryKeluar = await _database?.rawQuery(
-        "SELECT SUM(total) as totalPengeluaran FROM ${namaTabel} WHERE type = 2");
+        "SELECT SUM(total) as totalPengeluaran FROM $namaTabel WHERE type = 2");
     if (queryKeluar?.first['totalPengeluaran'] == null) {
       return 0;
     }
@@ -69,10 +69,10 @@ class DatabaseInstance {
 
   Future<int> saldo() async {
     final queryMasuk = await _database?.rawQuery(
-        "SELECT SUM(total) as totalPemasukan FROM ${namaTabel} WHERE type = 1");
+        "SELECT SUM(total) as totalPemasukan FROM $namaTabel WHERE type = 1");
 
     final queryKeluar = await _database?.rawQuery(
-        "SELECT SUM(total) as totalPengeluaran FROM ${namaTabel} WHERE type = 2");
+        "SELECT SUM(total) as totalPengeluaran FROM $namaTabel WHERE type = 2");
 
     if (queryMasuk?.first['totalPemasukan'] == null &&
         queryKeluar?.first['totalPengeluaran'] == null) {
@@ -104,10 +104,10 @@ class DatabaseInstance {
     return query;
   }
 
-  Future<List<Map<String, Object?>>> getPerDes(String bln) async {
+  Future<List<Map<String, Object?>>> getPerBulan(String bln) async {
     print(bln);
     final records = await _database?.rawQuery(
-        "SELECT * FROM $namaTabel WHERE updated_at BETWEEN '$bln/1/2022 12:00 AM' AND '$bln/31/2022 11:59 PM'");
+        "SELECT * FROM $namaTabel WHERE updated_at BETWEEN '$bln/1/2000' AND '$bln/31/2100'");
     if (records == null) {
       return [];
     }

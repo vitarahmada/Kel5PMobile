@@ -1,24 +1,20 @@
-import 'package:catatankeuangan/read_screen.dart';
-import 'package:catatankeuangan/transaksi_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'database_instance.dart';
-import 'create_screen.dart';
-import 'update_screen.dart';
 
 List<String> bulan = <String>[
-  'Januari',
-  'Februari',
-  'Maret',
+  'January',
+  'February',
+  'March',
   'April',
-  'Mei',
-  'Juni',
-  'Juli',
-  'Agustus',
+  'May',
+  'June',
+  'July',
+  'August',
   'September',
-  'Oktober',
+  'October',
   'November',
-  'Desember'
+  'December'
 ];
 
 class LaporanPerBulan extends StatefulWidget {
@@ -29,22 +25,6 @@ class LaporanPerBulan extends StatefulWidget {
 }
 
 class _LaporanPerBulanState extends State<LaporanPerBulan> {
-  /* DatabaseInstance? databaseInstance;
-
-  List<Map<String, dynamic>> _daftar_ = [];
-
-  // This function is used to fetch all data from the database
-  void _refreshWishlist() async {
-    final data = await databaseInstance?.getPerDes();
-    setState(() {
-      _daftar_ = data!;
-    });
-  }
-
-  Future _refresh() async {
-    _refreshWishlist();
-    setState(() {});
-  } */
 
   DatabaseInstance? databaseInstance;
 
@@ -257,7 +237,7 @@ class _LaporanPerBulanState extends State<LaporanPerBulan> {
                             Flexible(
                               flex: 4,
                               child: FutureBuilder(
-                                  future: databaseInstance!.getPerDes(bulan_),
+                                  future: databaseInstance!.getPerBulan(bulan_),
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
@@ -305,10 +285,7 @@ class _LaporanPerBulanState extends State<LaporanPerBulan> {
                                                               248),
                                                       title: Text(
                                                           "${snapshot.data![index]['kategori']} : ${snapshot.data![index]['total']}"),
-                                                      subtitle: Text((snapshot
-                                                          .data![index]
-                                                              ['updated_at']
-                                                          .toString()))));
+                                                      subtitle: Text("${snapshot.data![index]['updated_at']}")));
                                             });
                                       } else {
                                         return const Text("Tidak ada data");
