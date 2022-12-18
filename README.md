@@ -1,6 +1,6 @@
 # APLIKASI CATATAN KEUANGAN
 
-Merupakan sebuah aplikasi yang dirancang untuk membantu pengguna dalam mengatur keuangan user.
+Merupakan sebuah aplikasi yang dirancang untuk membantu user dalam mengatur keuangan.
 
 ### Kelompok 5
 
