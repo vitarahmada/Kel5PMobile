@@ -101,68 +101,7 @@ class _LaporanPerBulanState extends State<LaporanPerBulan> {
                     child: Container(
                         color: const Color.fromARGB(255, 188, 206, 248),
                         child: Column(children: [
-                          /* const Padding(padding: EdgeInsets.all(10)),
-                          Flexible(
-                            flex: 1,
-                            child: FutureBuilder(
-                                future: databaseInstance?.saldo(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const Text("-");
-                                  } else {
-                                    if (snapshot.hasData) {
-                                      return Text(
-                                          "Saldo : Rp. ${snapshot.data.toString()}");
-                                    } else {
-                                      return const Text("");
-                                    }
-                                  }
-                                }),
-                          ),
-                          Flexible(
-                              flex: 1,
-                              child: FutureBuilder(
-                                  future: databaseInstance?.totalPemasukan(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const Text("-");
-                                    } else {
-                                      if (snapshot.hasData) {
-                                        return Text(
-                                            "Total pemasukan : Rp. ${snapshot.data.toString()}");
-                                      } else {
-                                        return const Text("");
-                                      }
-                                    }
-                                  })),
-                          Flexible(
-                            flex: 1,
-                            child: FutureBuilder(
-                                future: databaseInstance?.totalPengeluaran(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const Text("-");
-                                  } else {
-                                    if (snapshot.hasData) {
-                                      return Text(
-                                          "Total pengeluaran : Rp. ${snapshot.data.toString()}");
-                                    } else {
-                                      return const Text("");
-                                    }
-                                  }
-                                }),
-                          ),
-                          const Padding(padding: EdgeInsets.all(10)),
-                        ],
-                      ),
-                    ),
-                  )
-                ])),
-            const Padding(padding: EdgeInsets.all(3)), */
-                          Flexible(
+                            Flexible(
                             flex: 1,
                             child: Center(
                               child: DropdownButton<String>(
