@@ -23,18 +23,18 @@ class ReadScreen extends StatefulWidget {
 class _ReadScreenState extends State<ReadScreen> {
   DatabaseInstance databaseInstance = DatabaseInstance();
 
-  String formattedDateUpdated = (DateFormat.yMd().format(DateTime.now()));
+  TextEditingController date = TextEditingController();
   TextEditingController ketController = TextEditingController();
   TextEditingController totalController = TextEditingController();
-  String dropdownValue = list.first;
+  TextEditingController kategori = TextEditingController();
   int _value = 1;
 
   @override
   void initState() {
     // implementasi initState
     databaseInstance.database();
-    formattedDateUpdated = widget.transaksiMmodel.updatedAt!;
-    dropdownValue = widget.transaksiMmodel.kategori!;
+    date.text = widget.transaksiMmodel.updatedAt!;
+    kategori.text = widget.transaksiMmodel.kategori!;
     ketController.text = widget.transaksiMmodel.ket!;
     totalController.text = widget.transaksiMmodel.total.toString();
     _value = widget.transaksiMmodel.type!;
@@ -63,9 +63,7 @@ class _ReadScreenState extends State<ReadScreen> {
                 height: 20,
               ),
               Text(
-                "Tanggal : $formattedDateUpdated",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+                "Tanggal : ${date.text}"),
               const SizedBox(
                 height: 20,
               ),
@@ -78,28 +76,9 @@ class _ReadScreenState extends State<ReadScreen> {
                 height: 20,
               ),
               const Text("Kategori"),
-              DropdownButton<String>(
-                value: dropdownValue,
-                icon: const Icon(
-                    Icons.arrow_drop_down_outlined), //arrow_downward),
-                elevation: 16,
-                style: const TextStyle(color: Colors.black),
-                underline: Container(
-                  height: 2,
-                  color: const Color.fromARGB(255, 1, 100, 5),
-                ),
-                onChanged: (String? value) {
-                  setState(() {
-                    dropdownValue = value!;
-                  });
-                },
-                items: list.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    enabled: false,
-                    child: Text(value),
-                  );
-                }).toList(),
+              TextField(
+                controller: kategori,
+                readOnly: true,
               ),
               const SizedBox(
                 height: 20,
@@ -119,30 +98,17 @@ class _ReadScreenState extends State<ReadScreen> {
                   SizedBox(
                     width: 14,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      _value = 1;
-
-                      setState(() {});
-                    },
-                    child: Chip(
+                  Chip(
                         backgroundColor:
                             _value == 1 ? Colors.blueGrey : Colors.grey[200],
                         label: Text('Income')),
-                  ),
                   SizedBox(
                     width: 14,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      _value = 0;
-                      setState(() {});
-                    },
-                    child: Chip(
+                  Chip(
                         backgroundColor:
                             _value == 0 ? Colors.blueGrey : Colors.grey[200],
                         label: Text('Expense')),
-                  )
                 ],
               ),
               const SizedBox(
