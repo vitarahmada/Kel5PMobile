@@ -6,11 +6,7 @@ import 'create_screen.dart';
 import 'update_screen.dart';
 import 'about.dart';
 
-
-enum MenuItem {
-  laporan,
-  about
-}
+enum MenuItem { laporan, about }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -73,34 +69,31 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Catatan Keuangan"),
           elevation: 5.0,
-          actions: [PopupMenuButton(
-              onSelected: (value) {
-                if (value == MenuItem.laporan) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => LaporanPerBulan(),
-                  ));
-                }
-                else if (value == MenuItem.about) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AboutUs()
-                  ));
-                }
-              },
-              itemBuilder: ((context) => [
-                const PopupMenuItem(
-                    value: MenuItem.laporan,
-                    child: Text("Laporan")),
-                const PopupMenuItem(
-                    value: MenuItem.about,
-                    child: Text("About"))
-              ]))],
+          actions: [
+            PopupMenuButton(
+                onSelected: (value) {
+                  if (value == MenuItem.laporan) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => LaporanPerBulan(),
+                    ));
+                  } else if (value == MenuItem.about) {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => AboutUs()));
+                  }
+                },
+                itemBuilder: ((context) => [
+                      const PopupMenuItem(
+                          value: MenuItem.laporan, child: Text("Laporan")),
+                      const PopupMenuItem(
+                          value: MenuItem.about, child: Text("About"))
+                    ]))
+          ],
         ),
         body: RefreshIndicator(
           onRefresh: _refresh,
@@ -115,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: const Color.fromARGB(255, 188, 206, 248),
                       child: Column(
                         children: [
-                          const Padding(padding: EdgeInsets.all(10)),
+                          const Padding(padding: EdgeInsets.all(20)),
                           Flexible(
                             flex: 1,
                             child: FutureBuilder(
@@ -127,7 +120,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   } else {
                                     if (snapshot.hasData) {
                                       return Text(
-                                          "Saldo : Rp. ${snapshot.data.toString()}");
+                                          "Saldo : Rp. ${snapshot.data.toString()}",
+                                          style: TextStyle(
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.w700));
                                     } else {
                                       return const Text("");
                                     }
@@ -145,7 +141,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                     } else {
                                       if (snapshot.hasData) {
                                         return Text(
-                                            "Total pemasukan : Rp. ${snapshot.data.toString()}");
+                                          "Total Pemasukan : Rp. ${snapshot.data.toString()}",
+                                          style: TextStyle(
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.w700),
+                                        );
                                       } else {
                                         return const Text("");
                                       }
@@ -162,7 +162,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   } else {
                                     if (snapshot.hasData) {
                                       return Text(
-                                          "Total pengeluaran : Rp. ${snapshot.data.toString()}");
+                                          "Total Pengeluaran : Rp. ${snapshot.data.toString()}",
+                                          style: TextStyle(
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.w700));
                                     } else {
                                       return const Text("");
                                     }
@@ -175,13 +178,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   )
                 ])),
-            const Padding(padding: EdgeInsets.all(3)),
+            const Padding(padding: EdgeInsets.all(5)),
             const Flexible(
                 flex: 1,
                 child: Text(
                   "History",
                   style: TextStyle(fontSize: 30),
                 )),
+            const Padding(padding: EdgeInsets.all(5)),
             Flexible(
                 flex: 4,
                 child: FutureBuilder(
@@ -196,29 +200,33 @@ class _MyHomePageState extends State<MyHomePage> {
                               itemBuilder: (context, index) {
                                 return Card(
                                   margin:
-                                  const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                                      const EdgeInsets.fromLTRB(20, 5, 20, 5),
                                   child: ListTile(
                                       onTap: () {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) {
-                                                  return ReadScreen(transaksiMmodel: snapshot.data![index],);
-                                                })); /**/
+                                          return ReadScreen(
+                                            transaksiMmodel:
+                                                snapshot.data![index],
+                                          );
+                                        }));
+                                        /**/
                                       },
                                       leading: SizedBox(
                                         width: 50,
                                         child: snapshot.data![index].type == 1
                                             ? IconButton(
-                                          icon:
-                                          const Icon(Icons.download),
-                                          color: Colors.green,
-                                          onPressed: () {},
-                                        )
+                                                icon:
+                                                    const Icon(Icons.download),
+                                                color: Colors.green,
+                                                onPressed: () {},
+                                              )
                                             : IconButton(
-                                          icon: const Icon(Icons.upload),
-                                          color: Colors.redAccent,
-                                          onPressed: () {},
-                                        ),
+                                                icon: const Icon(Icons.upload),
+                                                color: Colors.redAccent,
+                                                onPressed: () {},
+                                              ),
                                       ),
                                       tileColor: const Color.fromARGB(
                                           255, 188, 206, 248),
@@ -235,17 +243,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 flex: 1,
                                                 child: IconButton(
                                                     icon:
-                                                    const Icon(Icons.edit),
+                                                        const Icon(Icons.edit),
                                                     onPressed: () {
                                                       Navigator.of(context)
                                                           .push(
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                  UpdateScreen(
-                                                                    transaksiMmodel:
-                                                                    snapshot.data![index],
-                                                                  )))
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          UpdateScreen(
+                                                                            transaksiMmodel:
+                                                                                snapshot.data![index],
+                                                                          )))
                                                           .then((value) {
                                                         setState(() {});
                                                       });
@@ -254,7 +262,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               flex: 1,
                                               child: IconButton(
                                                   icon:
-                                                  const Icon(Icons.delete),
+                                                      const Icon(Icons.delete),
                                                   onPressed: () {
                                                     showAlertDialog(
                                                         context,
