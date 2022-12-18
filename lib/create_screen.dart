@@ -21,10 +21,6 @@ class CreateScreen extends StatefulWidget {
 class _CreateScreenState extends State<CreateScreen> {
   DatabaseInstance databaseInstance = DatabaseInstance();
 
-  String formattedDateCreated =
-      (DateFormat.yMd().add_jm().format(DateTime.now()));
-  String formattedDateUpdated =
-      (DateFormat.yMd().add_jm().format(DateTime.now()));
   TextEditingController date = TextEditingController();
   TextEditingController ketController = TextEditingController();
   TextEditingController totalController = TextEditingController();
@@ -35,6 +31,7 @@ class _CreateScreenState extends State<CreateScreen> {
   void initState() {
     // implementasi initState
     databaseInstance.database();
+    date.text = "";
     super.initState();
   }
 
@@ -55,14 +52,31 @@ class _CreateScreenState extends State<CreateScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text(
-                  "Tanggal : $formattedDateCreated",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                /* Text("Tanggal : "),
+                Text("Tanggal : "),
                 TextField(
                   controller: date,
-                ), */
+                  
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.calendar_today),
+                      labelText: "Masukkan Tanggal",
+                    ),
+                    readOnly: true,
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100));
+                      if (pickedDate != null) {
+                        String formattedDate =DateFormat.yMd().format(pickedDate);
+                        setState(() {
+                          date.text = formattedDate.toString();
+                        });
+                      } else {
+                        print("not selected");
+                      }
+                    }
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -96,28 +110,6 @@ class _CreateScreenState extends State<CreateScreen> {
                     );
                   }).toList(),
                 ),
-                /* ListTile(
-                  title: const Text("Pemasukan"),
-                  leading: Radio(
-                      groupValue: _value,
-                      value: 1,
-                      onChanged: (value) {
-                        setState(() {
-                          _value = int.parse(value.toString());
-                        });
-                      }),
-                ),
-                ListTile(
-                  title: const Text("Pengeluaran"),
-                  leading: Radio(
-                      groupValue: _value,
-                      value: 2,
-                      onChanged: (value) {
-                        setState(() {
-                          _value = int.parse(value.toString());
-                        });
-                      }),
-                ), */
                 const SizedBox(
                   height: 20,
                 ),
@@ -128,8 +120,6 @@ class _CreateScreenState extends State<CreateScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                /* 
-                const Text("Tipe Transaksi"), */
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -175,12 +165,13 @@ class _CreateScreenState extends State<CreateScreen> {
                         'kategori': dropdownValue,
                         'type': _value,
                         'total': total,
-                        'created_at': formattedDateCreated,
-                        'updated_at': formattedDateUpdated,
+                        'created_at': date.text,
+                        'updated_at': date.text,
                       });
                       setState(() {});
                       //print("sudah masuk : " + idInsert.toString());
                       // ignore: use_build_context_synchronously
+                        print(date.text);
                       Navigator.pop(context);
                     },
                     child: const Text("Simpan")),

@@ -24,8 +24,7 @@ class UpdateScreen extends StatefulWidget {
 class _UpdateScreenState extends State<UpdateScreen> {
   DatabaseInstance databaseInstance = DatabaseInstance();
 
-  String formattedDateUpdated =
-      (DateFormat.yMd().add_jm().format(DateTime.now()));
+  TextEditingController date = TextEditingController();
   TextEditingController ketController = TextEditingController();
   TextEditingController totalController = TextEditingController();
   String dropdownValue = list.first;
@@ -35,7 +34,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
   void initState() {
     // implementasi initState
     databaseInstance.database();
-    //formattedDateUpdated = widget.transaksiMmodel.updatedAt!;
+    date.text = widget.transaksiMmodel.updatedAt.toString();
     dropdownValue = widget.transaksiMmodel.kategori!;
     ketController.text = widget.transaksiMmodel.ket!;
     totalController.text = widget.transaksiMmodel.total.toString();
@@ -62,9 +61,41 @@ class _UpdateScreenState extends State<UpdateScreen> {
                 height: 20,
               ),
               Text(
-                "Tanggal : $formattedDateUpdated",
+                "Tanggal : ",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              TextField(
+                  controller: date,
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.calendar_today),
+                    labelText: "Masukkan Tanggal",
+                  ),
+                  readOnly: true,
+                  onTap: () async {
+                    int thnPicked = int.parse(date.text.split('/')[2]);
+                    int blnPicked = int.parse(date.text.split('/')[0]);
+                    int dayPicked = int.parse(date.text.split('/')[1]);
+
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate:
+                            DateTime(thnPicked, blnPicked, dayPicked),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2100));
+                    if (pickedDate != null) {
+                      String formattedDate =
+                          DateFormat.yMd().format(pickedDate);
+                      setState(() {
+                        date.text = formattedDate.toString();
+                        //untuk cek
+                        print(date.text);
+                      });
+                    } else {
+                      //untuk cek
+                      print("not selected");
+                      print((date.text).split('/')[0]);
+                    }
+                  }),
               const SizedBox(
                 height: 20,
               ),
@@ -97,28 +128,6 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   );
                 }).toList(),
               ),
-              /* ListTile(
-                title: const Text("Pemasukan"),
-                leading: Radio(
-                    groupValue: _value,
-                    value: 1,
-                    onChanged: (value) {
-                      setState(() {
-                        _value = int.parse(value.toString());
-                      });
-                    }),
-              ),
-              ListTile(
-                title: const Text("Pengeluaran"),
-                leading: Radio(
-                    groupValue: _value,
-                    value: 2,
-                    onChanged: (value) {
-                      setState(() {
-                        _value = int.parse(value.toString());
-                      });
-                    }),
-              ), */
               const SizedBox(
                 height: 20,
               ),
@@ -129,7 +138,6 @@ class _UpdateScreenState extends State<UpdateScreen> {
               const SizedBox(
                 height: 20,
               ),
-              //const Text("Tipe Transaksi"),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -175,7 +183,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                       'kategori': dropdownValue,
                       'type': _value,
                       'total': total,
-                      'updated_at': formattedDateUpdated,
+                      'updated_at': date.text,
                     });
                     // print("sudah masuk : " + idInsert.toString());
                     // ignore: use_build_context_synchronously
