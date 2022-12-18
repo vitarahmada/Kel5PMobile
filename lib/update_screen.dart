@@ -53,146 +53,145 @@ class _UpdateScreenState extends State<UpdateScreen> {
       body: SingleChildScrollView(
         child: SafeArea(
             child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Tanggal : ",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              TextField(
-                  controller: date,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.calendar_today),
-                    labelText: "Masukkan Tanggal",
-                  ),
-                  readOnly: true,
-                  onTap: () async {
-                    int thnPicked = int.parse(date.text.split('/')[2]);
-                    int blnPicked = int.parse(date.text.split('/')[0]);
-                    int dayPicked = int.parse(date.text.split('/')[1]);
-
-                    DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate:
-                            DateTime(thnPicked, blnPicked, dayPicked),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2100));
-                    if (pickedDate != null) {
-                      String formattedDate =
-                          DateFormat.yMd().format(pickedDate);
-                      setState(() {
-                        date.text = formattedDate.toString();
-                        //untuk cek
-                        print(date.text);
-                      });
-                    } else {
-                      //untuk cek
-                      print("not selected");
-                      print((date.text).split('/')[0]);
-                    }
-                  }),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text("Jumlah"),
-              TextField(
-                controller: totalController,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text("Kategori"),
-              DropdownButton<String>(
-                value: dropdownValue,
-                icon: const Icon(Icons.arrow_drop_down_outlined),
-                elevation: 16,
-                style: const TextStyle(color: Colors.black),
-                underline: Container(
-                  height: 2,
-                  color: const Color.fromARGB(255, 1, 100, 5),
-                ),
-                onChanged: (String? value) {
-                  setState(() {
-                    dropdownValue = value!;
-                  });
-                },
-                items: list.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text("Keterangan"),
-              TextField(
-                controller: ketController,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Type :'),
-                  SizedBox(
-                    width: 14,
+                  const SizedBox(
+                    height: 20,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      _value = 1;
+                  Text(
+                    "Tanggal : ",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextField(
+                      controller: date,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.calendar_today),
+                        labelText: "Masukkan Tanggal",
+                      ),
+                      readOnly: true,
+                      onTap: () async {
+                        int thnPicked = int.parse(date.text.split('/')[2]);
+                        int blnPicked = int.parse(date.text.split('/')[0]);
+                        int dayPicked = int.parse(date.text.split('/')[1]);
 
-                      setState(() {});
+                        DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime(thnPicked, blnPicked, dayPicked),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2100));
+                        if (pickedDate != null) {
+                          String formattedDate =
+                          DateFormat.yMd().format(pickedDate);
+                          setState(() {
+                            date.text = formattedDate.toString();
+                            //untuk cek
+                            print(date.text);
+                          });
+                        } else {
+                          //untuk cek
+                          print("not selected");
+                          print((date.text).split('/')[0]);
+                        }
+                      }),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text("Jumlah"),
+                  TextField(
+                      controller: totalController,
+                      keyboardType: TextInputType.number),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text("Kategori"),
+                  DropdownButton<String>(
+                    value: dropdownValue,
+                    icon: const Icon(Icons.arrow_drop_down_outlined),
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.black),
+                    underline: Container(
+                      height: 2,
+                      color: const Color.fromARGB(255, 1, 100, 5),
+                    ),
+                    onChanged: (String? value) {
+                      setState(() {
+                        dropdownValue = value!;
+                      });
                     },
-                    child: Chip(
-                        backgroundColor:
+                    items: list.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text("Keterangan"),
+                  TextField(
+                    controller: ketController,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Type :'),
+                      SizedBox(
+                        width: 14,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _value = 1;
+
+                          setState(() {});
+                        },
+                        child: Chip(
+                            backgroundColor:
                             _value == 1 ? Colors.blueGrey : Colors.grey[200],
-                        label: Text('Income')),
-                  ),
-                  SizedBox(
-                    width: 14,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      _value = 0;
-                      setState(() {});
-                    },
-                    child: Chip(
-                        backgroundColor:
+                            label: Text('Income')),
+                      ),
+                      SizedBox(
+                        width: 14,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _value = 0;
+                          setState(() {});
+                        },
+                        child: Chip(
+                            backgroundColor:
                             _value == 0 ? Colors.blueGrey : Colors.grey[200],
-                        label: Text('Expense')),
-                  )
+                            label: Text('Expense')),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                      onPressed: () async {
+                        int total = int.parse(totalController.text);
+                        await databaseInstance
+                            .update(widget.transaksiMmodel.id!.toInt(), {
+                          'ket': ketController.text,
+                          'kategori': dropdownValue,
+                          'type': _value,
+                          'total': total,
+                          'updated_at': date.text,
+                        });
+                        // print("sudah masuk : " + idInsert.toString());
+                        // ignore: use_build_context_synchronously
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Simpan")),
                 ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                  onPressed: () async {
-                    int total = int.parse(totalController.text);
-                    await databaseInstance
-                        .update(widget.transaksiMmodel.id!.toInt(), {
-                      'ket': ketController.text,
-                      'kategori': dropdownValue,
-                      'type': _value,
-                      'total': total,
-                      'updated_at': date.text,
-                    });
-                    // print("sudah masuk : " + idInsert.toString());
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Simpan")),
-            ],
-          ),
-        )),
+            )),
       ),
     );
   }
