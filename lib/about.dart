@@ -11,7 +11,6 @@ class AboutUs extends StatefulWidget {
 }
 
 class _AboutUsState extends State<AboutUs> {
-  static final double radius = 20;
 
   Widget buildText(BuildContext context) => ExpansionTile(
         title: Text('Penggunaan Aplikasi',
@@ -131,7 +130,7 @@ class _AboutUsState extends State<AboutUs> {
                       EdgeInsets.only(right: 12, left: 12, top: 6, bottom: 2),
                   child: Card(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(radius),
+                        borderRadius: BorderRadius.circular(16),
                         side: BorderSide(color: Colors.lightBlue, width: 1.5)),
                     child: SingleChildScrollView(
                       physics: BouncingScrollPhysics(),
@@ -147,7 +146,7 @@ class _AboutUsState extends State<AboutUs> {
                   padding: EdgeInsets.only(right: 12, left: 12, bottom: 12),
                   child: Card(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(radius),
+                        borderRadius: BorderRadius.circular(16),
                         side: BorderSide(color: Colors.lightBlue, width: 1.5)),
                     child: SingleChildScrollView(
                       physics: BouncingScrollPhysics(),
