@@ -113,4 +113,46 @@ class DatabaseInstance {
     }
     return records;
   }
+
+  Future<int> totalPemasukanPerBulan(String bln) async {
+    final queryMasuk = await _database?.rawQuery(
+        "SELECT SUM(total) as totalPemasukan FROM $namaTabel WHERE type = 1 AND updated_at BETWEEN '$bln/1/2000' AND '$bln/31/2100'");
+    if (queryMasuk?.first['totalPemasukan'] == null) {
+      return 0;
+    }
+    return int.parse(queryMasuk!.first['totalPemasukan'].toString());
+  }
+
+  Future<int> totalPengeluaranPerBulan(String bln) async {
+    final queryKeluar = await _database?.rawQuery(
+        "SELECT SUM(total) as totalPengeluaran FROM $namaTabel WHERE type = 2 AND updated_at BETWEEN '$bln/1/2000' AND '$bln/31/2100'");
+    if (queryKeluar?.first['totalPengeluaran'] == null) {
+      return 0;
+    }
+    return int.parse(queryKeluar!.first['totalPengeluaran'].toString());
+  }
+
+  Future<int> saldoPerBulan(String bln) async {
+    final queryMasuk = await _database?.rawQuery(
+        "SELECT SUM(total) as totalPemasukan FROM $namaTabel WHERE type = 1 AND updated_at BETWEEN '$bln/1/2000' AND '$bln/31/2100'");
+
+    final queryKeluar = await _database?.rawQuery(
+        "SELECT SUM(total) as totalPengeluaran FROM $namaTabel WHERE type = 2 AND updated_at BETWEEN '$bln/1/2000' AND '$bln/31/2100'");
+
+    if (queryMasuk?.first['totalPemasukan'] == null &&
+        queryKeluar?.first['totalPengeluaran'] == null) {
+      return 0;
+    }
+    if (queryMasuk?.first['totalPemasukan'] == null &&
+        queryKeluar?.first['totalPengeluaran'] != null) {
+      return (0 - int.parse(queryKeluar!.first['totalPengeluaran'].toString()));
+    }
+    if (queryMasuk?.first['totalPemasukan'] != null &&
+        queryKeluar?.first['totalPengeluaran'] == null) {
+      return int.parse(queryMasuk!.first['totalPemasukan'].toString());
+    } else {
+      return (int.parse(queryMasuk!.first['totalPemasukan'].toString()) -
+          int.parse(queryKeluar!.first['totalPengeluaran'].toString()));
+    }
+  }
 }
